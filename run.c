@@ -21,7 +21,7 @@ p_meta find_meta(p_meta *last, size_t size) {
         case FIRST_FIT:
         {
             while(index){
-                if(index->free && (index->size) >= size){
+                if(index->free && (index->size) > size){
                     result = index;
                     break;
                 }
@@ -37,10 +37,8 @@ p_meta find_meta(p_meta *last, size_t size) {
 
             while(index != 0){
                if(index->free != 0)
-                  if((index->size) >=size){
-                     if(best == 0)
-                        best = index;
-                     else if(best->size > index->size)
+                  if((index->size) >size){
+                    if(best->size > index->size)
                         best = index;
                   }
                index = (index->next);
@@ -55,10 +53,8 @@ p_meta find_meta(p_meta *last, size_t size) {
 
             while(index != 0){
                if(index->free !=0)
-                  if((index->size) >= size){
-                     if(worst == 0)
-                        worst = index;
-                     else if(worst->size < index->size)
+                  if((index->size) > size){
+                     if(worst->size < index->size)
                         worst = index;
                   }
                index = (index->next);
@@ -150,7 +146,7 @@ void* m_realloc(void* ptr, size_t size){   // free and merge hole
     }
 
 
-    if(cur->size >= size){
+    if(cur->size > size){
         if(cur->size < size+META_SIZE)  // internal fragmentation
             return cur->data;
         else{ 
